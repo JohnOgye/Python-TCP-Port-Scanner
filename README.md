@@ -1,10 +1,10 @@
-Python TCP Port Scanner
+# Python TCP Port Scanner
 
 A Python-based TCP port scanner developed as a cybersecurity learning project.
 
 The tool scans a user-defined range of TCP ports, identifies open ports, attempts to determine their associated services, measures scan duration, and saves the results to a text report.
 
-Project Purpose
+## Project Purpose
 
 This project was created to develop practical understanding of:
 
@@ -17,7 +17,7 @@ This project was created to develop practical understanding of:
 - Error handling
 - Basic cybersecurity assessment
 
-Features
+## Features
 
 - IP address scanning
 - Hostname support
@@ -31,8 +31,9 @@ Features
 - Scan-duration measurement
 - Automatic result reporting
 - Results saved to `scan_results.txt`
+```
 
-Technologies
+## Technologies
 
 - Python 3
 - Socket programming
@@ -50,3 +51,89 @@ Python-TCP-Port-Scanner/
 ├── LICENSE
 ├── README.md
 └── port_scanner.py
+```
+
+## Installation
+
+```bash
+git clone https://github.com/JohnOgye/Python-TCP-Port-Scanner.git
+```
+```bash
+cd Python-TCP-Port-Scanner
+```
+
+## Usage
+
+Run the program and enter an IP address or hostname.
+Example:
+Enter IP address or hostname: 127.0.0.1
+Enter starting port (1-65535): 1
+Enter ending port (1-65535): 1000
+The scanner tests every TCP port in the selected range.
+Example output (illustrative):
+Target: 127.0.0.1
+IP address: 127.0.0.1
+Scanning TCP ports 1-1000...
+
+[OPEN] Port 80     Service: http
+[OPEN] Port 443    Service: https
+
+==================================================
+SCAN COMPLETE
+==================================================
+Target: 127.0.0.1
+Ports scanned: 1-1000
+Open ports found: 2
+Scan duration: 2.31 seconds
+Results saved to: scan_results.txt
+
+## How It Works
+
+1. Accepts an IP address or hostname from the user.
+2. Validates the target and port range.
+3. Resolves the hostname to an IP address when necessary.
+4. Attempts TCP connections to each port in the selected range.
+5. Identifies open ports.
+6. Attempts basic service-name identification.
+7. Measures the total scan duration.
+8. Saves the scan results to `scan_results.txt`.
+
+
+## Security & Ethical Use
+
+This project is intended for cybersecurity education, authorized security testing, and network administration.
+
+Only scan systems and networks that you own or have explicit permission to test.
+
+Unauthorized port scanning may violate organizational policies, terms of service, or applicable laws.
+
+The author is not responsible for misuse of this tool.
+
+## Limitations
+
+- TCP scanning only
+- Basic service-name identification
+- No UDP scanning
+- No operating-system detection
+- No vulnerability exploitation
+- Scan speed depends on network conditions and timeout settings
+
+## Future Improvements
+
+- Add concurrent scanning for improved performance
+- Add UDP port scanning
+- Improve service detection with banner grabbing
+- Add CSV or JSON result export
+- Add command-line arguments
+- Add configurable connection timeouts
+- Add scan progress indicators
+- Add unit tests
+
+## Author
+
+Developed by John Ogye as a cybersecurity learning project.
+
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.
+
