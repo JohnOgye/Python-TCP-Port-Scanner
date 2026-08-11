@@ -127,7 +127,36 @@ The author is not responsible for misuse of this tool.
 - Add command-line arguments
 - Add configurable connection timeouts
 - Add scan progress indicators
-- Add unit tests
+- Add unit tests.
+
+## Development Progress
+
+This project was developed incrementally as part of my cybersecurity learning journey.
+
+### Phase 1 — Basic Port Scanner
+- Implemented TCP socket connections
+- Scanned ports 1–100
+- Tested against localhost (`127.0.0.1`)
+
+### Phase 2 — Scanner Improvements
+- Added hostname support
+- Added configurable port ranges
+- Added input validation
+- Added error handling
+- Added service-name identification
+- Added scan-duration measurement
+- Added result-file generation
+
+### Phase 3 — Local Testing
+A local TCP test server was created on `127.0.0.1:5000` to provide a controlled environment for testing.
+
+The scanner successfully detected the test server's open TCP port.
+
+### Phase 4 — Documentation
+- Added professional README
+- Added MIT License
+- Added `.gitignore`
+- Documented ethical and authorized use
 
 ## Author
 
