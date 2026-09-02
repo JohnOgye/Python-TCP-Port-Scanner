@@ -1,3 +1,4 @@
+import argparse
 import socket
 import tempfile
 import unittest
@@ -158,6 +159,109 @@ class TestPortScanner(unittest.TestCase):
                 "Port 5000",
                 contents
             )
+    def test_port_number_valid(self):
+        result = port_scanner.port_number("443")
+
+        self.assertEqual(result, 443)
+
+
+    def test_port_number_invalid(self):
+        with self.assertRaises(
+            argparse.ArgumentTypeError
+        ):
+            port_scanner.port_number("0")
+
+
+    def test_positive_timeout_valid(self):
+        result = port_scanner.positive_timeout("1.5")
+
+        self.assertEqual(result, 1.5)
+
+
+    def test_worker_count_valid(self):
+        result = port_scanner.worker_count("25")
+
+        self.assertEqual(result, 25)
+
+
+    def test_argument_parser_defaults(self):
+        parser = port_scanner.build_parser()
+
+        args = parser.parse_args(
+            [
+                "127.0.0.1",
+                "-s",
+                "1",
+                "-e",
+                "100"
+            ]
+        )
+
+        self.assertEqual(
+            args.target,
+            "127.0.0.1"
+        )
+        self.assertEqual(
+            args.start_port,
+            1
+        )
+        self.assertEqual(
+            args.end_port,
+            100
+        )
+        self.assertEqual(
+            args.timeout,
+            port_scanner.DEFAULT_TIMEOUT
+        )
+        self.assertEqual(
+            args.workers,
+            port_scanner.MAX_WORKERS
+        )
+        self.assertEqual(
+            args.output,
+            port_scanner.RESULTS_FILE
+        )
+
+
+    def test_argument_parser_custom_options(self):
+        parser = port_scanner.build_parser()
+
+        args = parser.parse_args(
+            [
+                "127.0.0.1",
+                "--start-port",
+                "4995",
+                "--end-port",
+                "5005",
+                "--timeout",
+                "1.0",
+                "--workers",
+                "25",
+                "--output",
+                "custom_results.txt"
+            ]
+        )
+
+        self.assertEqual(
+            args.start_port,
+            4995
+        )
+        self.assertEqual(
+            args.end_port,
+            5005
+        )
+        self.assertEqual(
+            args.timeout,
+            1.0
+        )
+        self.assertEqual(
+            args.workers,
+            25
+        )
+        self.assertEqual(
+            args.output,
+            "custom_results.txt"
+        )
 
 
 if __name__ == "__main__":
