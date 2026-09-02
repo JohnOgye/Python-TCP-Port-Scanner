@@ -30,7 +30,7 @@ This project was created to develop practical understanding of:
 - Error handling
 - Scan-duration measurement
 - Automatic result reporting
-- Results saved to `scan_results.txt`
+- Results saved to `scan_results.txt
 ```
 ## Technologies
 
