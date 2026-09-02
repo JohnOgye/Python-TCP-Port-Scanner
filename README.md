@@ -102,6 +102,16 @@ Results saved to: scan_results.txt
 7. Measures the total scan duration.
 8. Saves the scan results to `scan_results.txt`.
 
+## How It Works
+
+1. Accepts an IPv4 address or hostname from the user.
+2. Validates the target and requested port range.
+3. Resolves hostnames to IPv4 addresses when necessary.
+4. Attempts a TCP connection to each port in the selected range.
+5. Identifies ports that accept TCP connections.
+6. Looks up the standard service name associated with each open port.
+7. Measures the total scan duration.
+8. Saves the scan results to `scan_results.txt`.
 
 ## Security & Ethical Use
 
