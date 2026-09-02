@@ -3,8 +3,13 @@ import time
 from datetime import datetime
 
 
+DEFAULT_TIMEOUT = 0.5
+RESULTS_FILE = "scan_results.txt"
+SEPARATOR_WIDTH = 50
+
+
 def resolve_target(target):
-    """Resolve a hostname or IP address."""
+    """Resolve a hostname or IPv4 address."""
     try:
         return socket.gethostbyname(target)
     except socket.gaierror:
@@ -12,7 +17,7 @@ def resolve_target(target):
 
 
 def get_port_range():
-    """Ask the user for a valid port range."""
+    """Prompt the user until a valid TCP port range is entered."""
     while True:
         try:
             start = int(input("Enter starting port (1-65535): "))
@@ -23,64 +28,103 @@ def get_port_range():
                 continue
 
             if start > end:
-                print("Error: Starting port must not exceed ending port.")
+                print(
+                    "Error: Starting port must not exceed ending port."
+                )
                 continue
 
             return start, end
 
         except ValueError:
-            print("Error: Please enter valid numbers.")
+            print("Error: Please enter valid numeric port values.")
 
 
-def scan_port(target_ip, port, timeout=0.5):
-    """Check whether a TCP port is open and identify its service."""
+def get_service_name(port):
+    """Return the standard TCP service name associated with a port."""
     try:
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        return socket.getservbyport(port, "tcp")
+    except OSError:
+        return "Unknown"
+
+
+def scan_port(target_ip, port, timeout=DEFAULT_TIMEOUT):
+    """Check whether a TCP port accepts a connection."""
+    try:
+        with socket.socket(
+            socket.AF_INET,
+            socket.SOCK_STREAM
+        ) as sock:
             sock.settimeout(timeout)
 
-            if sock.connect_ex((target_ip, port)) == 0:
-                try:
-                    service = socket.getservbyport(port, "tcp")
-                except OSError:
-                    service = "Unknown"
+            result = sock.connect_ex((target_ip, port))
 
+            if result == 0:
+                service = get_service_name(port)
                 return True, service
 
-    except socket.error:
-        pass
+    except OSError:
+        return False, None
 
     return False, None
 
 
-def save_results(filename, target, target_ip, start, end, open_ports, duration):
-    """Save scan results to a text file."""
+def save_results(
+    filename,
+    target,
+    target_ip,
+    start_port,
+    end_port,
+    open_ports,
+    duration
+):
+    """Save scan results to a text report."""
     with open(filename, "w", encoding="utf-8") as file:
         file.write("PYTHON TCP PORT SCANNER\n")
-        file.write("=" * 50 + "\n")
-        file.write(f"Scan date: {datetime.now()}\n")
+        file.write("=" * SEPARATOR_WIDTH + "\n")
+
+        file.write(
+            f"Scan date: "
+            f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+        )
+
         file.write(f"Target: {target}\n")
-        file.write(f"Resolved IP: {target_ip}\n")
-        file.write(f"Port range: {start}-{end}\n")
-        file.write(f"Scan duration: {duration:.2f} seconds\n")
-        file.write(f"Open ports: {len(open_ports)}\n")
-        file.write("=" * 50 + "\n\n")
+        file.write(f"Resolved IPv4 address: {target_ip}\n")
+        file.write(
+            f"Port range: {start_port}-{end_port}\n"
+        )
+        file.write(
+            f"Scan duration: {duration:.2f} seconds\n"
+        )
+        file.write(
+            f"Open ports found: {len(open_ports)}\n"
+        )
+
+        file.write("=" * SEPARATOR_WIDTH + "\n\n")
 
         if open_ports:
             file.write("OPEN PORTS\n")
-            file.write("-" * 50 + "\n")
+            file.write("-" * SEPARATOR_WIDTH + "\n")
 
             for port, service in open_ports:
-                file.write(f"Port {port:<6} Service: {service}\n")
+                file.write(
+                    f"Port {port:<6} "
+                    f"Service name: {service}\n"
+                )
         else:
-            file.write("No open TCP ports were found.\n")
+            file.write(
+                "No open TCP ports were found.\n"
+            )
 
 
 def main():
-    print("=" * 50)
-    print("          PYTHON TCP PORT SCANNER")
-    print("=" * 50)
+    """Run the TCP port scanner."""
+    print("=" * SEPARATOR_WIDTH)
+    print(" PYTHON TCP PORT SCANNER")
+    print("=" * SEPARATOR_WIDTH)
 
-    target = input("Enter IP address or hostname: ").strip()
+    target = input(
+        "Enter IPv4 address or hostname: "
+    ).strip()
 
     if not target:
         print("Error: Target cannot be empty.")
@@ -94,37 +138,65 @@ def main():
 
     start_port, end_port = get_port_range()
 
-    print("\n" + "-" * 50)
+    print("\n" + "-" * SEPARATOR_WIDTH)
     print(f"Target: {target}")
-    print(f"IP address: {target_ip}")
-    print(f"Scanning TCP ports {start_port}-{end_port}...")
-    print("-" * 50)
+    print(f"Resolved IPv4 address: {target_ip}")
+    print(
+        f"Scanning TCP ports "
+        f"{start_port}-{end_port}..."
+    )
+    print("-" * SEPARATOR_WIDTH)
 
-    start_time = time.time()
+    start_time = time.perf_counter()
     open_ports = []
 
-    for port in range(start_port, end_port + 1):
-        is_open, service = scan_port(target_ip, port)
+    try:
+        for port in range(
+            start_port,
+            end_port + 1
+        ):
+            is_open, service = scan_port(
+                target_ip,
+                port
+            )
 
-        if is_open:
-            open_ports.append((port, service))
-            print(f"[OPEN] Port {port:<6} Service: {service}")
+            if is_open:
+                open_ports.append(
+                    (port, service)
+                )
 
-    duration = time.time() - start_time
+                print(
+                    f"[OPEN] Port {port:<6} "
+                    f"Service name: {service}"
+                )
 
-    print("\n" + "=" * 50)
+    except KeyboardInterrupt:
+        print("\nScan interrupted by user.")
+        return
+
+    duration = time.perf_counter() - start_time
+
+    print("\n" + "=" * SEPARATOR_WIDTH)
     print("SCAN COMPLETE")
-    print("=" * 50)
-    print(f"Target: {target}")
-    print(f"Ports scanned: {start_port}-{end_port}")
-    print(f"Open ports found: {len(open_ports)}")
-    print(f"Scan duration: {duration:.2f} seconds")
+    print("=" * SEPARATOR_WIDTH)
 
-    filename = "scan_results.txt"
+    print(f"Target: {target}")
+    print(
+        f"Ports scanned: "
+        f"{start_port}-{end_port}"
+    )
+    print(
+        f"Open ports found: "
+        f"{len(open_ports)}"
+    )
+    print(
+        f"Scan duration: "
+        f"{duration:.2f} seconds"
+    )
 
     try:
         save_results(
-            filename,
+            RESULTS_FILE,
             target,
             target_ip,
             start_port,
@@ -132,10 +204,17 @@ def main():
             open_ports,
             duration
         )
-        print(f"Results saved to: {filename}")
+
+        print(
+            f"Results saved to: "
+            f"{RESULTS_FILE}"
+        )
 
     except OSError as error:
-        print(f"Warning: Could not save results: {error}")
+        print(
+            f"Warning: Could not save results: "
+            f"{error}"
+        )
 
 
 if __name__ == "__main__":
