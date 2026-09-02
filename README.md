@@ -35,23 +35,6 @@ This project was created to develop practical understanding of:
 
 ## Technologies
 
-- Python 3
-- Socket programming
-- TCP/IP
-- Python standard library
-
-No external packages are required.
-
-Project Structure
-
-```text
-Python-TCP-Port-Scanner/
-│
-├── .gitignore
-├── LICENSE
-├── README.md
-└── port_scanner.py
-```
 
 ## Installation
 
