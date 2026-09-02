@@ -33,8 +33,6 @@ This project was created to develop practical understanding of:
 - Results saved to `scan_results.txt`
 ```
 
-## Technologies
-
 ## Installation
 
 ```bash
