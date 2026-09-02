@@ -247,13 +247,13 @@ The scanner successfully detected the test server's open TCP port.
 - Tested closed-port handling
 - Tested scan-result file generation
 - Used mocks to test socket-related behavior without relying on external systems
-- Successfully passed all 7 automated tests.
+- Successfully passed all 9 automated tests.
 
 #### Unit Test Results
 
-All 7 automated tests completed successfully.
+All 9 automated tests completed successfully, including tests for concurrent port scanning and sorted open-port results.
 
-![Successful unit test run](screenshots/unit-tests-passed.jpg)
+![Successful 9-test unit test run](screenshots/unit-tests-9-passed.jpg)
 
 ### Phase 7 — Concurrent Scanning
 
