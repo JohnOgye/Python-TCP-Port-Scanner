@@ -2,7 +2,7 @@
 
 A Python-based TCP port scanner developed as a cybersecurity learning project.
 
-The tool scans a user-defined range of TCP ports, identifies open ports, attempts to determine their associated services, measures scan duration, and saves the results to a text report.
+The tool scans a user-defined range of TCP ports, identifies open ports, looks up common service names using standard TCP port mappings, measures scan duration, and saves the results to a text report.
 
 ## Project Purpose
 
@@ -12,10 +12,10 @@ This project was created to develop practical understanding of:
 - Network ports
 - Socket programming
 - Network reconnaissance
-- Service identification
+- Service-name lookup
 - Input validation
 - Error handling
-- Basic cybersecurity assessment
+- Basic network security assessment
 
 ## Features
 
