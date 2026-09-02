@@ -181,6 +181,16 @@ The scanner successfully detected the test server's open TCP port.
 - Documented ethical and authorized use
 - Documented future improvements
 
+### Phase 5 — Code Refinement
+
+- Replaced `time.time()` with `time.perf_counter()` for more accurate scan-duration measurement
+- Separated service-name lookup into its own function
+- Improved socket and file error handling
+- Added graceful scan interruption with `Ctrl+C`
+- Added reusable constants for timeout, report filename, and output formatting
+- Improved code readability and documentation
+- Clarified IPv4 support and service-name lookup behavior
+
 ## Author
 
 Developed by John Ogye as a cybersecurity learning project.
