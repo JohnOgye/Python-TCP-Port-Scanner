@@ -192,7 +192,6 @@ The author is not responsible for misuse of this tool.
 - Add IPv6 support
 - Improve service identification using banner grabbing
 - Add UDP scanning
-- Add unit tests
 
 ## Development Progress
 
@@ -238,6 +237,16 @@ The scanner successfully detected the test server's open TCP port.
 - Added reusable constants for timeout, report filename, and output formatting
 - Improved code readability and documentation
 - Clarified IPv4 support and service-name lookup behavior
+- ### Phase 6 — Unit Testing
+
+- Added automated tests using Python's `unittest` framework
+- Tested successful and failed hostname resolution
+- Tested known and unknown service-name lookups
+- Tested open-port detection
+- Tested closed-port handling
+- Tested scan-result file generation
+- Used mocks to test socket-related behavior without relying on external systems
+- Successfully passed all 7 automated tests
 
 ## Author
 
