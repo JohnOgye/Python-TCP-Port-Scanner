@@ -35,7 +35,6 @@ This project was created to develop practical understanding of:
 
 ## Technologies
 
-
 ## Installation
 
 ```bash
