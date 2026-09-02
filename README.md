@@ -183,7 +183,7 @@ The scanner successfully detected the test server's open TCP port.
 
 ### Phase 5 — Code Refinement
 
-- Replaced `time.time()` with `time.perf_counter()` for more accurate scan-duration measurement
+- Replaced `time.time()` with `time.perf_counter()` for reliable elapsed-time measurement
 - Separated service-name lookup into its own function
 - Improved socket and file error handling
 - Added graceful scan interruption with `Ctrl+C`
