@@ -283,6 +283,20 @@ The concurrent scanner successfully detected the controlled test server running 
 - Added validation for ports, timeout values, and worker counts
 - Successfully passed all 15 automated tests
 
+#### Command-Line Test Result
+
+The scanner was successfully executed from the command line using a custom port range, timeout, worker count, and output filename.
+
+Example command:
+
+```bash
+python port_scanner.py 127.0.0.1 -s 4995 -e 5005 -t 0.5 -w 25 -o cli_scan_results.txt
+```
+
+The controlled localhost TCP server on port `5000` was successfully detected.
+
+![Successful command-line scan](screenshots/cli-command-scan-port-5000.jpg)
+
 ## Author
 
 Developed by Ogye Matthew John as a cybersecurity learning project.
