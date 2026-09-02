@@ -30,8 +30,8 @@ This project was created to develop practical understanding of:
 - Error handling
 - Scan-duration measurement
 - Automatic result reporting
-- Results saved to `scan_results.txt
-```
+- Results saved to `scan_results.txt`
+
 ## Technologies
 
 - Python 3
@@ -52,7 +52,7 @@ Python-TCP-Port-Scanner/
 └── port_scanner.py
 ```
 
-### File Overview
+## File Overview
 
 - `port_scanner.py` — Main Python script containing the TCP port-scanning functionality.
 - `README.md` — Project documentation, installation instructions, usage examples, and development notes.
