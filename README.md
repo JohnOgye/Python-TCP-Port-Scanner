@@ -247,13 +247,13 @@ The scanner successfully detected the test server's open TCP port.
 - Tested closed-port handling
 - Tested scan-result file generation
 - Used mocks to test socket-related behavior without relying on external systems
-- Successfully passed all 9 automated tests.
+- Successfully passed all 15 automated tests.
 
 #### Unit Test Results
 
-All 9 automated tests completed successfully, including tests for concurrent port scanning and sorted open-port results.
+All 15 automated tests completed successfully, including tests for concurrent scanning, command-line argument parsing, and input validation.
 
-![Successful 9-test unit test run](screenshots/unit-tests-9-passed.jpg)
+![Successful 15-test unit test run](screenshots/unit-tests-15-passed.jpg)
 
 ### Phase 7 — Concurrent Scanning
 
@@ -270,6 +270,18 @@ All 9 automated tests completed successfully, including tests for concurrent por
 The concurrent scanner successfully detected the controlled test server running on `127.0.0.1:5000`.
 
 ![Concurrent scan detecting port 5000](screenshots/concurrent-scan-port-5000-open.jpg)
+
+### Phase 8 — Command-Line Arguments
+
+- Added command-line argument support using Python's `argparse`
+- Added optional target specification from the command line
+- Added configurable starting and ending TCP ports
+- Added configurable connection timeout
+- Added configurable worker-thread count
+- Added configurable output report filename
+- Preserved interactive mode when command-line arguments are not supplied
+- Added validation for ports, timeout values, and worker counts
+- Successfully passed all 15 automated tests
 
 ## Author
 
