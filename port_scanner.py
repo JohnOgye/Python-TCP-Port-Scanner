@@ -1,11 +1,13 @@
 import socket
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 
 
 DEFAULT_TIMEOUT = 0.5
 RESULTS_FILE = "scan_results.txt"
 SEPARATOR_WIDTH = 50
+MAX_WORKERS = 50
 
 
 def resolve_target(target):
@@ -28,9 +30,7 @@ def get_port_range():
                 continue
 
             if start > end:
-                print(
-                    "Error: Starting port must not exceed ending port."
-                )
+                print("Error: Starting port must not exceed ending port.")
                 continue
 
             return start, end
@@ -56,16 +56,55 @@ def scan_port(target_ip, port, timeout=DEFAULT_TIMEOUT):
         ) as sock:
             sock.settimeout(timeout)
 
-            result = sock.connect_ex((target_ip, port))
-
-            if result == 0:
+            if sock.connect_ex((target_ip, port)) == 0:
                 service = get_service_name(port)
                 return True, service
 
     except OSError:
-        return False, None
+        pass
 
     return False, None
+
+
+def scan_ports(
+    target_ip,
+    start_port,
+    end_port,
+    max_workers=MAX_WORKERS
+):
+    """Scan a range of TCP ports concurrently."""
+    if start_port > end_port:
+        return []
+
+    port_count = end_port - start_port + 1
+    workers = max(1, min(max_workers, port_count))
+
+    open_ports = []
+
+    with ThreadPoolExecutor(max_workers=workers) as executor:
+        future_to_port = {
+            executor.submit(
+                scan_port,
+                target_ip,
+                port
+            ): port
+            for port in range(start_port, end_port + 1)
+        }
+
+        for future in as_completed(future_to_port):
+            port = future_to_port[future]
+
+            try:
+                is_open, service = future.result()
+            except Exception:
+                continue
+
+            if is_open:
+                open_ports.append((port, service))
+
+    open_ports.sort(key=lambda item: item[0])
+
+    return open_ports
 
 
 def save_results(
@@ -89,15 +128,9 @@ def save_results(
 
         file.write(f"Target: {target}\n")
         file.write(f"Resolved IPv4 address: {target_ip}\n")
-        file.write(
-            f"Port range: {start_port}-{end_port}\n"
-        )
-        file.write(
-            f"Scan duration: {duration:.2f} seconds\n"
-        )
-        file.write(
-            f"Open ports found: {len(open_ports)}\n"
-        )
+        file.write(f"Port range: {start_port}-{end_port}\n")
+        file.write(f"Scan duration: {duration:.2f} seconds\n")
+        file.write(f"Open ports found: {len(open_ports)}\n")
 
         file.write("=" * SEPARATOR_WIDTH + "\n\n")
 
@@ -111,9 +144,7 @@ def save_results(
                     f"Service name: {service}\n"
                 )
         else:
-            file.write(
-                "No open TCP ports were found.\n"
-            )
+            file.write("No open TCP ports were found.\n")
 
 
 def main():
@@ -143,56 +174,39 @@ def main():
     print(f"Resolved IPv4 address: {target_ip}")
     print(
         f"Scanning TCP ports "
-        f"{start_port}-{end_port}..."
+        f"{start_port}-{end_port} "
+        f"with up to {MAX_WORKERS} workers..."
     )
     print("-" * SEPARATOR_WIDTH)
 
     start_time = time.perf_counter()
-    open_ports = []
 
     try:
-        for port in range(
+        open_ports = scan_ports(
+            target_ip,
             start_port,
-            end_port + 1
-        ):
-            is_open, service = scan_port(
-                target_ip,
-                port
-            )
-
-            if is_open:
-                open_ports.append(
-                    (port, service)
-                )
-
-                print(
-                    f"[OPEN] Port {port:<6} "
-                    f"Service name: {service}"
-                )
-
+            end_port
+        )
     except KeyboardInterrupt:
         print("\nScan interrupted by user.")
         return
 
     duration = time.perf_counter() - start_time
 
+    for port, service in open_ports:
+        print(
+            f"[OPEN] Port {port:<6} "
+            f"Service name: {service}"
+        )
+
     print("\n" + "=" * SEPARATOR_WIDTH)
     print("SCAN COMPLETE")
     print("=" * SEPARATOR_WIDTH)
 
     print(f"Target: {target}")
-    print(
-        f"Ports scanned: "
-        f"{start_port}-{end_port}"
-    )
-    print(
-        f"Open ports found: "
-        f"{len(open_ports)}"
-    )
-    print(
-        f"Scan duration: "
-        f"{duration:.2f} seconds"
-    )
+    print(f"Ports scanned: {start_port}-{end_port}")
+    print(f"Open ports found: {len(open_ports)}")
+    print(f"Scan duration: {duration:.2f} seconds")
 
     try:
         save_results(
@@ -205,15 +219,11 @@ def main():
             duration
         )
 
-        print(
-            f"Results saved to: "
-            f"{RESULTS_FILE}"
-        )
+        print(f"Results saved to: {RESULTS_FILE}")
 
     except OSError as error:
         print(
-            f"Warning: Could not save results: "
-            f"{error}"
+            f"Warning: Could not save results: {error}"
         )
 
 
