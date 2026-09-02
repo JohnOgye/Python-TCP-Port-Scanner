@@ -160,7 +160,6 @@ Results saved to: scan_results.txt
 ![Controlled scan report](screenshots/controlled-scan-report.jpg)
 
 The comparison demonstrates that the scanner correctly distinguishes between a baseline state with no detected open ports and a controlled environment containing a known open TCP port.
-```
 
 ## Security & Ethical Use
 
