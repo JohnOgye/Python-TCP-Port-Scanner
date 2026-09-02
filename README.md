@@ -237,7 +237,8 @@ The scanner successfully detected the test server's open TCP port.
 - Added reusable constants for timeout, report filename, and output formatting
 - Improved code readability and documentation
 - Clarified IPv4 support and service-name lookup behavior
-- ### Phase 6 — Unit Testing
+
+### Phase 6 — Unit Testing
 
 - Added automated tests using Python's `unittest` framework
 - Tested successful and failed hostname resolution
@@ -247,6 +248,12 @@ The scanner successfully detected the test server's open TCP port.
 - Tested scan-result file generation
 - Used mocks to test socket-related behavior without relying on external systems
 - Successfully passed all 7 automated tests
+
+#### Unit Test Results
+
+All 7 automated tests completed successfully.
+
+![Successful unit test run](screenshots/unit-tests-passed.jpg)
 
 ## Author
 
