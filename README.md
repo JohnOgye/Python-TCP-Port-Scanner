@@ -115,11 +115,28 @@ Results saved to: scan_results.txt
 
 ## Testing
 
-The scanner was tested in a controlled localhost environment using a TCP test server on `127.0.0.1:5000`.
+The scanner was tested in a controlled localhost environment using `127.0.0.1`.
 
-A scan of TCP ports `1-5000` successfully detected port `5000` as open.
+### Test 1 — Baseline Scan
 
-Example result:
+A baseline scan was performed before starting the local TCP test server.
+
+The scanner scanned TCP ports `1-5005` and completed without detecting any open ports.
+
+```text
+Ports scanned: 1-5005
+Open ports found: 0
+Scan duration: 3.83 seconds
+Results saved to: scan_results.txt
+```
+
+![Baseline scan with no open ports](screenshots/baseline-scan-no-open-ports.jpg)
+
+### Test 2 — Controlled Open-Port Test
+
+A local TCP test server was then started on `127.0.0.1:5000`.
+
+The scanner was run again and successfully detected TCP port `5000` as open.
 
 ```text
 [OPEN] Port 5000   Service name: Unknown
@@ -130,6 +147,11 @@ Ports scanned: 1-5000
 Open ports found: 1
 Scan duration: 4.21 seconds
 Results saved to: scan_results.txt
+```
+
+![Controlled scan detecting port 5000](screenshots/controlled-scan-port-5000-open.jpg)
+
+The comparison demonstrates that the scanner correctly distinguishes between a baseline state with no detected open ports and a controlled environment containing a known open TCP port.
 ```
 
 ## Security & Ethical Use
