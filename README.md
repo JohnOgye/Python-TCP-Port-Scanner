@@ -32,6 +32,32 @@ This project was created to develop practical understanding of:
 - Automatic result reporting
 - Results saved to `scan_results.txt`
 ```
+## Technologies
+
+- Python 3
+- Socket programming
+- TCP/IP networking
+- Python standard library
+
+No external packages are required.
+
+## Project Structure
+
+```text
+Python-TCP-Port-Scanner/
+│
+├── .gitignore
+├── LICENSE
+├── README.md
+└── port_scanner.py
+```
+
+### File Overview
+
+- `port_scanner.py` — Main Python script containing the TCP port-scanning functionality.
+- `README.md` — Project documentation, installation instructions, usage examples, and development notes.
+- `.gitignore` — Prevents unnecessary files from being tracked by Git.
+- `LICENSE` — MIT License for the project.
 
 ## Installation
 
