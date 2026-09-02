@@ -31,6 +31,7 @@ This project was created to develop practical understanding of:
 - Scan-duration measurement
 - Automatic result reporting
 - Results saved to `scan_results.txt`
+- Concurrent TCP port scanning using up to 50 worker threads.
 
 ## Technologies
 
@@ -184,14 +185,13 @@ The author is not responsible for misuse of this tool.
 
 ## Future Improvements
 
-- Add concurrent scanning for improved performance
 - Add command-line arguments
 - Add configurable connection timeouts
 - Add CSV and JSON result export
 - Add scan progress indicators
 - Add IPv6 support
 - Improve service identification using banner grabbing
-- Add UDP scanning
+- Add UDP scanning.
 
 ## Development Progress
 
@@ -247,7 +247,7 @@ The scanner successfully detected the test server's open TCP port.
 - Tested closed-port handling
 - Tested scan-result file generation
 - Used mocks to test socket-related behavior without relying on external systems
-- Successfully passed all 7 automated tests
+- Successfully passed all 7 automated tests.
 
 #### Unit Test Results
 
@@ -255,9 +255,25 @@ All 7 automated tests completed successfully.
 
 ![Successful unit test run](screenshots/unit-tests-passed.jpg)
 
+### Phase 7 — Concurrent Scanning
+
+- Added concurrent TCP port scanning using `ThreadPoolExecutor`
+- Added a maximum worker limit of 50 threads
+- Allows multiple TCP connection attempts to run concurrently
+- Preserved existing open-port and service-name lookup behavior
+- Sorted detected open ports before displaying results
+- Successfully detected the controlled localhost test server on TCP port `5000`
+- Completed the observed concurrent scan of ports `1-5005` in 3.41 seconds
+
+#### Concurrent Scan Result
+
+The concurrent scanner successfully detected the controlled test server running on `127.0.0.1:5000`.
+
+![Concurrent scan detecting port 5000](screenshots/concurrent-scan-port-5000-open.jpg)
+
 ## Author
 
-Developed by John Ogye as a cybersecurity learning project.
+Developed by Ogye Matthew John as a cybersecurity learning project.
 
 ## License
 
