@@ -35,6 +35,7 @@ This project was created to develop practical understanding of:
 
 ## Technologies
 
+
 - Python 3
 - Socket programming
 - TCP/IP
