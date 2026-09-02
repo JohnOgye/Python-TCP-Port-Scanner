@@ -19,12 +19,12 @@ This project was created to develop practical understanding of:
 
 ## Features
 
-- IP address scanning
+- IPv4 address scanning
 - Hostname support
-- Configurable port ranges
-- TCP port scanning
+- Configurable TCP port ranges
+- TCP connect scanning
 - Open-port detection
-- Basic service-name identification
+- Basic service-name lookup using standard TCP port mappings
 - Connection timeout handling
 - Input validation
 - Error handling
@@ -93,14 +93,12 @@ Open ports found: 2
 Scan duration: 2.31 seconds
 Results saved to: scan_results.txt
 
-## How It Works
-
-1. Accepts an IP address or hostname from the user.
-2. Validates the target and port range.
-3. Resolves the hostname to an IP address when necessary.
-4. Attempts TCP connections to each port in the selected range.
-5. Identifies open ports.
-6. Attempts basic service-name identification.
+1. Accepts an IPv4 address or hostname from the user.
+2. Validates the target and requested port range.
+3. Resolves hostnames to IPv4 addresses when necessary.
+4. Attempts a TCP connection to each port in the selected range.
+5. Identifies ports that accept TCP connections.
+6. Looks up the standard service name associated with each open port.
 7. Measures the total scan duration.
 8. Saves the scan results to `scan_results.txt`.
 
@@ -117,22 +115,25 @@ The author is not responsible for misuse of this tool.
 
 ## Limitations
 
-- TCP scanning only
-- Basic service-name identification
+- TCP connect scanning only
+- IPv4 only
+- Sequential port scanning
+- Service names are based on standard port mappings and do not confirm the actual remote service
 - No UDP scanning
-- No operating-system detection
-- No vulnerability exploitation
-- Scan speed depends on network conditions and timeout settings
+- No operating system detection
+- No vulnerability detection or exploitation
+- Scan speed depends on the selected port range, network conditions, and timeout settings.
 
 ## Future Improvements
 
 - Add concurrent scanning for improved performance
-- Add UDP port scanning
-- Improve service detection with banner grabbing
-- Add CSV or JSON result export
 - Add command-line arguments
 - Add configurable connection timeouts
+- Add CSV and JSON result export
 - Add scan progress indicators
+- Add IPv6 support
+- Improve service identification using banner grabbing
+- Add UDP scanning
 - Add unit tests.
 
 ## Development Progress
