@@ -113,6 +113,25 @@ Results saved to: scan_results.txt
 7. Measures the total scan duration.
 8. Saves the scan results to `scan_results.txt`.
 
+## Testing
+
+The scanner was tested in a controlled localhost environment using a TCP test server on `127.0.0.1:5000`.
+
+A scan of TCP ports `1-5000` successfully detected port `5000` as open.
+
+Example result:
+
+```text
+[OPEN] Port 5000   Service name: Unknown
+
+SCAN COMPLETE
+Target: 127.0.0.1
+Ports scanned: 1-5000
+Open ports found: 1
+Scan duration: 4.21 seconds
+Results saved to: scan_results.txt
+```
+
 ## Security & Ethical Use
 
 This project is intended for cybersecurity education, authorized security testing, and network administration.
