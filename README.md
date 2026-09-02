@@ -144,7 +144,6 @@ The author is not responsible for misuse of this tool.
 - Add IPv6 support
 - Improve service identification using banner grabbing
 - Add UDP scanning
-- Add unit tests.
 
 ## Development Progress
 
